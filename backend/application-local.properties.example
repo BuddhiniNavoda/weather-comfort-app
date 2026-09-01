@@ -4,4 +4,3 @@ openweathermap.api-key=paste_your_key_here
 AUTH0_ISSUER_URI=https://YOUR_TENANT.auth0.com/
 AUTH0_AUDIENCE=https://weather-api
 AUTH0_ALLOWED_EMAILS=careers@fidenz.com,your.email@gmail.com
-AUTH0_REQUIRE_MFA=true

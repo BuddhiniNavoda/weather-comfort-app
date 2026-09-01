@@ -14,12 +14,4 @@ public class Auth0AccessProperties {
     public void setAllowedEmails(String allowedEmails) {
         this.allowedEmails = allowedEmails == null ? "" : allowedEmails;
     }
-
-    public boolean isRequireMfa() {
-        return requireMfa;
-    }
-
-    public void setRequireMfa(boolean requireMfa) {
-        this.requireMfa = requireMfa;
-    }
 }
