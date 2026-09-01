@@ -1,0 +1,9 @@
+.idea/
+*.iml
+*.class
+*.pdf
+
+backend/target/
+backend/node_modules/
+backend/application-local.properties
+backend/.env
