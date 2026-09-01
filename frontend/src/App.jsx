@@ -2,6 +2,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useMemo, useState } from "react";
 
 export default function App() {
+  const { isLoading: authLoading, isAuthenticated, loginWithRedirect, logout, getAccessTokenSilently, user } =
+    useAuth0();
   const [theme, setTheme] = useState(() => localStorage.getItem("theme") || "light");
   const [data, setData] = useState(null);
   const [error, setError] = useState("");
@@ -72,6 +74,8 @@ export default function App() {
       ? list.filter(
           (c) =>
             c.name.toLowerCase().includes(q))
+            c.name.toLowerCase().includes(q) ||
+            (c.country && c.country.toLowerCase().includes(q))
         )
       : list;
 
@@ -102,6 +106,20 @@ export default function App() {
             {theme === "dark" ? "Light mode" : "Dark mode"}
           </button>
          <div className="header-actions">
+        </header>
+        <p>Log in to see comfort scores.</p>
+        <button type="button" className="theme-btn" onClick={() => loginWithRedirect()}>
+          Log in
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="page">
+      <header className="top">
+        <h1>Weather dashboard</h1>
+        <div className="header-actions">
           <span className="muted">{user?.email}</span>
           <button type="button" className="theme-btn" onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
             {theme === "dark" ? "Light mode" : "Dark mode"}
