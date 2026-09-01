@@ -1,3 +1,4 @@
+import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useMemo, useState } from "react";
 
 export default function App() {
@@ -14,6 +15,13 @@ export default function App() {
   }, [theme]);
 
   useEffect(() => {
+     {
+    if (!isAuthenticated) {
+      setData(null);
+      setLoading(false);
+      return;
+    }
+
     let ignore = false;
     setLoading(true);
     getAccessTokenSilently()
@@ -40,6 +48,12 @@ export default function App() {
       })
       .catch((err) => {
         if (!ignore) {
+          setError(err.message + ". Start the Spring Boot app on port 8080.");
+          const msg = err.message || "Could not load weather";
+          const springDown =
+            msg.includes("Failed to fetch") ||
+            msg.includes("NetworkError") ||
+            msg.includes("Load failed");
           setError(springDown ? msg + " Start the Spring Boot app on port 8080." : msg);
         }
       })
@@ -49,7 +63,7 @@ export default function App() {
     return () => {
       ignore = true;
     };
-  }, []);
+  }, [isAuthenticated, getAccessTokenSilently]);
 
   const cities = useMemo(() => {
     const list = data?.cities ? [...data.cities] : [];
@@ -57,8 +71,7 @@ export default function App() {
     const filtered = q
       ? list.filter(
           (c) =>
-            c.name.toLowerCase().includes(q) ||
-            (c.country && c.country.toLowerCase().includes(q))
+            c.name.toLowerCase().includes(q))
         )
       : list;
 
@@ -72,11 +85,23 @@ export default function App() {
 
   const maxTemp = Math.max(1, ...cities.map((c) => Math.abs(c.temperature || 0)));
 
-  return (
-    <div className="page">
-      <header className="top">
-        <h1>Weather dashboard</h1>
-        <div className="header-actions">
+  if (authLoading) {
+    return (
+      <div className="page">
+        <p>Checking login...</p>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <div className="page">
+        <header className="top">
+          <h1>Weather dashboard</h1>
+          <button type="button" className="theme-btn" onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
+            {theme === "dark" ? "Light mode" : "Dark mode"}
+          </button>
+         <div className="header-actions">
           <span className="muted">{user?.email}</span>
           <button type="button" className="theme-btn" onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
             {theme === "dark" ? "Light mode" : "Dark mode"}
