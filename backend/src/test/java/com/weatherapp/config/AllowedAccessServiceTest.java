@@ -18,3 +18,4 @@ class AllowedAccessServiceTest {
         assertTrue(service.emailAllowed(""));
     }
 }
+

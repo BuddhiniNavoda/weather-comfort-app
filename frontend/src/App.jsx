@@ -17,6 +17,7 @@ export default function App() {
   }, [theme]);
 
   useEffect(() => {
+     {
     if (!isAuthenticated) {
       setData(null);
       setLoading(false);
@@ -49,6 +50,7 @@ export default function App() {
       })
       .catch((err) => {
         if (!ignore) {
+          setError(err.message + ". Start the Spring Boot app on port 8080.");
           const msg = err.message || "Could not load weather";
           const springDown =
             msg.includes("Failed to fetch") ||
@@ -71,6 +73,7 @@ export default function App() {
     const filtered = q
       ? list.filter(
           (c) =>
+            c.name.toLowerCase().includes(q))
             c.name.toLowerCase().includes(q) ||
             (c.country && c.country.toLowerCase().includes(q))
         )
@@ -102,6 +105,7 @@ export default function App() {
           <button type="button" className="theme-btn" onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
             {theme === "dark" ? "Light mode" : "Dark mode"}
           </button>
+         <div className="header-actions">
         </header>
         <p>Log in to see comfort scores.</p>
         <button type="button" className="theme-btn" onClick={() => loginWithRedirect()}>

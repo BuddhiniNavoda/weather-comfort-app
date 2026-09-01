@@ -10,6 +10,7 @@ const audience = import.meta.env.VITE_AUTH0_AUDIENCE;
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
+  <App />
     {domain && clientId && audience ? (
       <Auth0Provider
         domain={domain}
